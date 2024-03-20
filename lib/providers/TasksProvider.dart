@@ -2,11 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_todoapp/models/Task.dart';
 
 class TasksProvider extends ChangeNotifier {
-  final List<Task> _tasks = [
-    Task(title: 'Task 1', description: 'Description 1'),
-    Task(title: 'Task 2', description: 'Description 2'),
-    Task(title: 'Task 3', description: 'Description 3'),
-  ];
+  final List<Task> _tasks = [];
 
   List<Task> get tasks => _tasks;
 
@@ -20,8 +16,9 @@ class TasksProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void updateTask(Task task, String newTitle) {
+  void editTask(Task task, String newTitle, String newDescription) {
     _tasks[_tasks.indexOf(task)].title = newTitle;
+    _tasks[_tasks.indexOf(task)].description = newDescription;
     notifyListeners();
   }
 

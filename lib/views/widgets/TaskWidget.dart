@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_todoapp/models/Task.dart';
 import 'package:flutter_todoapp/providers/TasksProvider.dart';
+import 'package:flutter_todoapp/utils/NotificationHelper.dart';
+import 'package:flutter_todoapp/views/widgets/TaskDialogWidget.dart';
 import 'package:provider/provider.dart';
 
 class TaskWidget extends StatelessWidget {
@@ -10,24 +12,20 @@ class TaskWidget extends StatelessWidget {
     required this.task,
   });
 
-  void showNotification(BuildContext context, String message) {
-    ScaffoldMessenger.of(context).hideCurrentSnackBar();
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-      ),
-    );
-  }
-
   void toggleTask(BuildContext context, TasksProvider tasksProvider) {
     String action = task.isDone ? 'unmarked' : 'marked';
     tasksProvider.toggleTask(task, !task.isDone);
-    showNotification(
+    NotificationHelper.showNotification(
         context, 'Task "${task.title}" $action as completed successfully!');
   }
 
   void editTask(BuildContext context, TasksProvider tasksProvider) {
-    // TODO: Implement editTask method
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return TaskDialogWidget.edit(task: task);
+      },
+    );
   }
 
   void deleteTask(BuildContext context, TasksProvider tasksProvider) {
@@ -48,7 +46,7 @@ class TaskWidget extends StatelessWidget {
               onPressed: () {
                 tasksProvider.removeTask(task);
                 Navigator.of(context).pop();
-                showNotification(
+                NotificationHelper.showNotification(
                     context, 'Task "${task.title}" deleted successfully!');
               },
             ),

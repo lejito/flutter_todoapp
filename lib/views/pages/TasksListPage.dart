@@ -20,7 +20,7 @@ class TasksListPage extends StatelessWidget {
           showDialog(
             context: context,
             builder: (BuildContext context) {
-              return TaskDialogWidget();
+              return TaskDialogWidget.create();
             },
           ); 
         },
