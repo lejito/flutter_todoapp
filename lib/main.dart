@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_todoapp/providers/TasksProvider.dart';
+import 'package:flutter_todoapp/views/pages/TasksListPage.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -22,14 +23,13 @@ class ToDoApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: title,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.lime,
+          secondary: Colors.blueAccent,
+        ),
         useMaterial3: true,
       ),
-      home: Scaffold(
-        body: Center(
-          child: Text('¡Welcome to $title!'),
-        ),
-      ),
+      home: TasksListPage(),
     );
   }
 }
