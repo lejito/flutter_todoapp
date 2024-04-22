@@ -66,7 +66,10 @@ class TaskWidget extends StatelessWidget {
             onChanged: (bool? value) => toggleTask(context, tasksProvider),
           ),
           title: Text(task.title),
-          subtitle: Text(task.description),
+          subtitle: Text(task.description,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
           trailing: Row(
             mainAxisSize: MainAxisSize.min,
             children: [

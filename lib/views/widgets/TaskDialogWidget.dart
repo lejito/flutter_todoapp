@@ -7,12 +7,13 @@ import 'package:provider/provider.dart';
 class TaskDialogWidget extends StatefulWidget {
   bool isEditing;
   Task? task;
-  String title = '';
-  String description = '';
+  String title;
+  String description;
 
   TaskDialogWidget.create({super.key})
       : isEditing = false,
-        task = null;
+        title = '',
+        description = '';
 
   TaskDialogWidget.edit({super.key, required Task this.task})
       : isEditing = true,
@@ -44,8 +45,7 @@ class _TaskDialogWidgetState extends State<TaskDialogWidget> {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
       if (widget.isEditing) {
-        tasksProvider.editTask(
-            widget.task!, widget.title, widget.description);
+        tasksProvider.editTask(widget.task!, widget.title, widget.description);
         NotificationHelper.showNotification(
             context, 'Task "${widget.title}" edited successfully!');
       } else {

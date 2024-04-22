@@ -1,29 +1,45 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_todoapp/models/Task.dart';
 
 class TasksProvider extends ChangeNotifier {
-  final List<Task> _tasks = [];
+  final CollectionReference _tasks =
+      FirebaseFirestore.instance.collection('tasks');
 
-  List<Task> get tasks => _tasks;
+  Stream<List<Task>> getTasks() {
+    return _tasks.snapshots().map((snapshot) {
+      return snapshot.docs.map((doc) {
+        return Task.fromMap(
+          id: doc.id,
+          doc.data() as Map<String, dynamic>,
+        );
+      }).toList();
+    });
+  }
 
-  void addTask(Task task) {
-    _tasks.add(task);
+  Future<void> addTask(Task task) async {
+    await _tasks.add(task.toMapWithoutId());
     notifyListeners();
   }
 
-  void removeTask(Task task) {
-    _tasks.remove(task);
+  Future<void> removeTask(Task task) async {
+    await _tasks.doc(task.id).delete();
     notifyListeners();
   }
 
-  void editTask(Task task, String newTitle, String newDescription) {
-    _tasks[_tasks.indexOf(task)].title = newTitle;
-    _tasks[_tasks.indexOf(task)].description = newDescription;
+  Future<void> editTask(
+      Task task, String newTitle, String newDescription) async {
+    _tasks.doc(task.id).update({
+      'title': newTitle,
+      'description': newDescription,
+    });
     notifyListeners();
   }
 
-  void toggleTask(Task task, bool isDone) {
-    _tasks[_tasks.indexOf(task)].isDone = isDone;
+  Future<void> toggleTask(Task task, bool isDone) async {
+    _tasks.doc(task.id).update({
+      'isDone': isDone,
+    });
     notifyListeners();
   }
 }
